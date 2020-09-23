@@ -1,0 +1,50 @@
+If you want Balloon Tip with standard behavior made this modifications:
+All modifications are made in the BalloonMod.bas
+In the subrutine DisplayBalloon():
+a) Erase this lines
+	'Hide Mouse Pointer
+	mCount = ShowCursor(False)
+	Do While mCount >= 0
+	  mCount = ShowCursor(False)
+	Loop
+b) Replace this line:
+	'Display and Draw
+	.Show 
+   with:
+	'Display and Draw
+	.Show vbModeless, HookedForm
+
+c) Add this line after the DrawLabel rutine:
+	HookedForm.SetFocus
+
+In the Subrutine HideTip():
+
+d) Erase this lines:
+    'Show mouse pointer
+    mCount = ShowCursor(True)
+    Do While mCount < 0
+      mCount = ShowCursor(True)
+    Loop
+
+In the WndProc function:
+e)  Place this lines:
+      Set BalloonCtrl = ctrl
+      With ctrl
+         TipCtrl.Text = .ToolTipText
+         .ToolTipText = ""
+         'Turn on the timer
+         BalloonForm.Controls(0).Enabled = True
+      End With
+    Inside this If statement:
+	 If Len(ctrl.ToolTipText) > 0 Then
+                   Set BalloonCtrl = ctrl
+                   With ctrl
+                     TipCtrl.Text = .ToolTipText
+                     .ToolTipText = ""
+                     'Turn on the timer
+                     BalloonForm.Controls(0).Enabled = True
+                   End With
+         End If
+
+The result is a standard look alike tool tip. The only disadvantage is that
+you will see a little form fliker.
