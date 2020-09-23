@@ -1,0 +1,36 @@
+If you want fix the problem with the RIGHT function do the following:
+
+Replace this code in the Balloon Tip User control:
+
+Enum TextAlignValue
+    Left = 0
+    Center = 1
+    Right = 2
+End Enum
+
+with this:
+
+Enum TextAlignValue
+    To_Left = 0
+    To_Center = 1
+    To_Right = 2
+End Enum
+
+and change the m_def_TextAlign constant with:
+
+Const m_def_TextAlign = To_Left
+
+and in the DrawLabel Subrutine of the BalloonMod.Bas
+
+Replace:
+	If TipCtrl.TextAlign = Left Then
+	    lngFormat = lngFormat Or DT_LEFT
+	ElseIf TipCtrl.TextAlign = Center Then
+	...
+with:
+
+	If TipCtrl.TextAlign = To_Left Then
+	    lngFormat = lngFormat Or DT_LEFT
+	ElseIf TipCtrl.TextAlign = To_Center Then
+
+
